@@ -5,11 +5,11 @@ declare module "flexsearch" {
     readonly index: string;
     readonly length: number;
 
-    init();
-    init(options: CreateOptions);
-    info();
-    add(o: T);
-    add(id: number, o: string);
+    init(): Index<T>;
+    init(options: CreateOptions): Index<T>;
+    info(): void | Record<string, unknown>;
+    add(o: T): Index<T>;
+    add(id: number, o: string): Index<T>;
 
     // Result without pagination -> T[]
     search(query: string, options: number | SearchOptions, callback: (results: T[]) => void): void;
@@ -24,17 +24,17 @@ declare module "flexsearch" {
     search(options: SearchOptions & {query: string, page?: boolean | Cursor}): Promise<SearchResults<T>>;
 
 
-    update(id: number, o: T);
-    remove(id: number);
-    clear();
-    destroy();
-    addMatcher(matcher: Matcher);
+    update(id: number, o: T): Index<T>;
+    remove(id: number): Index<T>;
+    clear(): Index<T>;
+    destroy(): Index<T>;
+    addMatcher(matcher: Matcher): Index<T>;
 
     where(whereFn: (o: T) => boolean): T[];
-    where(whereObj: {[key: string]: string});
+    where(whereObj: {[key: string]: string}): T[];
     encode(str: string): string;
     export(): string;
-    import(exported: string);
+    import(exported: string): void;
   }
 
   interface SearchOptions {
@@ -94,10 +94,10 @@ declare module "flexsearch" {
 
   export default class FlexSearch {
     static create<T>(options?: CreateOptions): Index<T>;
-    static registerMatcher(matcher: Matcher);
-    static registerEncoder(name: string, encoder: EncoderFn);
-    static registerLanguage(lang: string, options: { stemmer?: Stemmer; filter?: string[] });
-    static encode(name: string, str: string);
+    static registerMatcher(matcher: Matcher): void;
+    static registerEncoder(name: string, encoder: EncoderFn): void;
+    static registerLanguage(lang: string, options: { stemmer?: Stemmer; filter?: string[] }): void;
+    static encode(name: string, str: string): unknown;
   }
 }
 
